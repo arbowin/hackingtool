@@ -124,6 +124,7 @@ class XSSStrike(HackingTool):
 
 class RVuln(HackingTool):
     TITLE = "RVuln"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Multi-threaded and Automated Web Vulnerability Scanner written in Rust."
     INSTALL_COMMANDS = [
         "git clone https://github.com/iinc0gnit0/RVuln.git;"

@@ -19,6 +19,7 @@ class AndroGuard(HackingTool):
 
 class Apk2Gold(HackingTool):
     TITLE = "Apk2Gold"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Apk2Gold is a CLI tool for decompiling Android apps to Java"
     INSTALL_COMMANDS = [
         "git clone https://github.com/lxdvs/apk2gold.git",

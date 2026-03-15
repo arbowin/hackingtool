@@ -7,6 +7,7 @@ from core import HackingTool, HackingToolsCollection, console
 
 class DDoSTool(HackingTool):
     TITLE = "DDoS"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "Best DDoS Attack Script With 36 Plus Methods. "
         "DDoS attacks for SECURITY TESTING PURPOSES ONLY!"
@@ -35,6 +36,7 @@ class DDoSTool(HackingTool):
 
 class SlowLoris(HackingTool):
     TITLE = "SlowLoris"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "Slowloris is basically an HTTP Denial of Service attack. "
         "It sends lots of HTTP requests."
@@ -48,6 +50,7 @@ class SlowLoris(HackingTool):
 
 class Asyncrone(HackingTool):
     TITLE = "Asyncrone | Multifunction SYN Flood DDoS Weapon"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "aSYNcrone is a C language based, multifunction SYN Flood DDoS Weapon.\n"
         "Disable the destination system by sending SYN packets intensively."
@@ -73,6 +76,7 @@ class Asyncrone(HackingTool):
 
 class UFONet(HackingTool):
     TITLE = "UFOnet"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "UFONet is a free software, P2P and cryptographic disruptive toolkit "
         "that allows performing DoS and DDoS attacks."
@@ -87,6 +91,7 @@ class UFONet(HackingTool):
 
 class GoldenEye(HackingTool):
     TITLE = "GoldenEye"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "GoldenEye is a python3 app for SECURITY TESTING PURPOSES ONLY!\n"
         "GoldenEye is a HTTP DoS Test Tool.\n"
@@ -108,6 +113,7 @@ class GoldenEye(HackingTool):
 
 class Saphyra(HackingTool):
     TITLE = "SaphyraDDoS"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "A Python DDoS script for SECURITY TESTING PURPOSES ONLY."
     INSTALL_COMMANDS = [
         # Bug 7 fix: removed "sudo su" (first step was dropping into interactive root shell)

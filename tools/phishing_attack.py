@@ -5,6 +5,7 @@ from core import HackingTool, HackingToolsCollection, console
 
 class Autophisher(HackingTool):
     TITLE = "Autophisher RK"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Automated Phishing Toolkit"
     INSTALL_COMMANDS = [
         "git clone https://github.com/CodingRanjith/autophisher.git",
@@ -28,6 +29,7 @@ class Pyphisher(HackingTool):
 
 class AdvPhishing(HackingTool):
     TITLE = "AdvPhishing"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "This is Advance Phishing Tool ! OTP PHISHING"
     INSTALL_COMMANDS = [
         "git clone https://github.com/Ignitetch/AdvPhishing.git",
@@ -40,6 +42,7 @@ class AdvPhishing(HackingTool):
 
 class Setoolkit(HackingTool):
     TITLE = "Setoolkit"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "The Social-Engineer Toolkit is an open-source penetration\n"
         "testing framework designed for social engineering."
@@ -54,6 +57,7 @@ class Setoolkit(HackingTool):
 
 class SocialFish(HackingTool):
     TITLE = "SocialFish"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Automated Phishing Tool & Information Collector NOTE: username is 'root' and password is 'pass'"
     INSTALL_COMMANDS = [
         "git clone https://github.com/UndeadSec/SocialFish.git && sudo apt-get install python3 python3-pip python3-dev -y",
@@ -65,6 +69,7 @@ class SocialFish(HackingTool):
 
 class HiddenEye(HackingTool):
     TITLE = "HiddenEye"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "Modern Phishing Tool With Advanced Functionality And Multiple Tunnelling Services\n"
         "\t[!] https://github.com/DarkSecDevelopers/HiddenEye"
@@ -80,6 +85,7 @@ class HiddenEye(HackingTool):
 
 class Evilginx2(HackingTool):
     TITLE = "Evilginx3"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "evilginx is a man-in-the-middle attack framework used for phishing login credentials\n"
         "along with session cookies, bypassing 2-factor authentication.\n"
@@ -97,6 +103,7 @@ class Evilginx2(HackingTool):
 
 class ISeeYou(HackingTool):
     TITLE = "I-See_You"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "[!] ISeeYou finds the exact location of a target via social engineering.\n"
         "[!] Expose local servers to the internet and decode location from log file."
@@ -111,6 +118,7 @@ class ISeeYou(HackingTool):
 
 class SayCheese(HackingTool):
     TITLE = "SayCheese"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Take webcam shots from target just by sending a malicious link"
     INSTALL_COMMANDS = ["git clone https://github.com/hangetzzu/saycheese"]
     RUN_COMMANDS = ["cd saycheese && sudo bash saycheese.sh"]
@@ -119,6 +127,7 @@ class SayCheese(HackingTool):
 
 class QRJacking(HackingTool):
     TITLE = "QR Code Jacking"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "QR Code Jacking (Any Website)"
     INSTALL_COMMANDS = [
         "git clone https://github.com/cryptedwolf/ohmyqr.git && sudo apt -y install scrot",
@@ -132,6 +141,7 @@ class QRJacking(HackingTool):
 
 class BlackEye(HackingTool):
     TITLE = "BlackEye"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "The ultimate phishing tool with 38 websites available!"
     INSTALL_COMMANDS = [
         "git clone https://github.com/thelinuxchoice/blackeye",
@@ -142,6 +152,7 @@ class BlackEye(HackingTool):
 
 class ShellPhish(HackingTool):
     TITLE = "ShellPhish"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Phishing Tool for 18 social media"
     INSTALL_COMMANDS = ["git clone https://github.com/An0nUD4Y/shellphish.git"]
     RUN_COMMANDS = ["cd shellphish && sudo bash shellphish.sh"]
@@ -150,6 +161,7 @@ class ShellPhish(HackingTool):
 
 class Thanos(HackingTool):
     TITLE = "Thanos"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Browser to Browser Phishing toolkit"
     INSTALL_COMMANDS = [
         "git clone https://github.com/TridevReddy/Thanos.git",
@@ -177,6 +189,7 @@ class QRLJacking(HackingTool):
 
 class Maskphish(HackingTool):
     TITLE = "Maskphish"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Hide phishing URL under a normal looking URL (google.com or facebook.com)"
     INSTALL_COMMANDS = [
         "git clone https://github.com/jaykali/maskphish.git",
@@ -187,6 +200,7 @@ class Maskphish(HackingTool):
 
 class BlackPhish(HackingTool):
     TITLE = "BlackPhish"
+    SUPPORTED_OS = ["linux"]
     INSTALL_COMMANDS = [
         "git clone https://github.com/iinc0gnit0/BlackPhish.git",
         "cd BlackPhish && sudo bash install.sh",

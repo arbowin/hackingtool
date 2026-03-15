@@ -5,6 +5,7 @@ from core import HackingTool, HackingToolsCollection, console
 
 class TheFatRat(HackingTool):
     TITLE = "The FatRat"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "TheFatRat provides an easy way to create backdoors and payloads "
         "which can bypass most anti-virus."
@@ -38,6 +39,7 @@ class TheFatRat(HackingTool):
 
 class Brutal(HackingTool):
     TITLE = "Brutal"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "Brutal is a toolkit to quickly create various payloads, powershell attacks, "
         "virus attacks and launch listener for a Human Interface Device."
@@ -62,6 +64,7 @@ class Brutal(HackingTool):
 
 class Stitch(HackingTool):
     TITLE = "Stitch"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "Stitch is a Cross Platform Python Remote Administrator Tool.\n"
         "[!] Refer to the project link for Windows & macOS support."
@@ -76,6 +79,7 @@ class Stitch(HackingTool):
 
 class MSFVenom(HackingTool):
     TITLE = "MSFvenom Payload Creator"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = (
         "MSFvenom Payload Creator (MSFPC) is a wrapper to generate multiple "
         "types of payloads, based on user choice."
@@ -90,6 +94,7 @@ class MSFVenom(HackingTool):
 
 class Venom(HackingTool):
     TITLE = "Venom Shellcode Generator"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Venom exploits apache2 webserver to deliver LAN payloads via fake webpages."
     INSTALL_COMMANDS = [
         "git clone https://github.com/r00t-3xp10it/venom.git",
@@ -113,6 +118,7 @@ class Spycam(HackingTool):
 
 class MobDroid(HackingTool):
     TITLE = "Mob-Droid"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Generates metasploit payloads easily without typing long commands."
     INSTALL_COMMANDS = ["git clone https://github.com/kinghacker0/mob-droid.git"]
     RUN_COMMANDS = ["cd mob-droid && sudo python3 mob-droid.py"]
@@ -121,6 +127,7 @@ class MobDroid(HackingTool):
 
 class Enigma(HackingTool):
     TITLE = "Enigma"
+    SUPPORTED_OS = ["linux"]
     DESCRIPTION = "Enigma is a Multiplatform payload dropper."
     INSTALL_COMMANDS = ["git clone https://github.com/UndeadSec/Enigma.git"]
     RUN_COMMANDS = ["cd Enigma && sudo python3 enigma.py"]
