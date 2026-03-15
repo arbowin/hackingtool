@@ -5,8 +5,8 @@ from rich.prompt import Prompt
 from core import HackingTool, HackingToolsCollection, console
 
 
-class ddos(HackingTool):
-    TITLE = "ddos"
+class DDoSTool(HackingTool):
+    TITLE = "DDoS"
     DESCRIPTION = (
         "Best DDoS Attack Script With 36 Plus Methods. "
         "DDoS attacks for SECURITY TESTING PURPOSES ONLY!"

@@ -3,7 +3,7 @@ import os
 from core import HackingTool, HackingToolsCollection, console
 
 
-class autophisher(HackingTool):
+class Autophisher(HackingTool):
     TITLE = "Autophisher RK"
     DESCRIPTION = "Automated Phishing Toolkit"
     INSTALL_COMMANDS = [
@@ -215,7 +215,7 @@ class Dnstwist(HackingTool):
 class PhishingAttackTools(HackingToolsCollection):
     TITLE = "Phishing attack tools"
     TOOLS = [
-        autophisher(),
+        Autophisher(),
         Pyphisher(),
         AdvPhishing(),
         Setoolkit(),
