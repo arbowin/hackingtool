@@ -373,11 +373,12 @@ class HackingToolsCollection:
             for index, tool in enumerate(active, start=1):
                 desc = getattr(tool, "DESCRIPTION", "") or "—"
                 desc = desc.splitlines()[0] if desc != "—" else "—"
-                status = "[green]✔[/green]" if tool.is_installed else "[dim]✘[/dim]"
+                has_status = hasattr(tool, "is_installed")
+                status = ("[green]✔[/green]" if tool.is_installed else "[dim]✘[/dim]") if has_status else ""
                 table.add_row(str(index), status, tool.TITLE, desc)
 
-            # Count not-installed tools for "Install All" label
-            not_installed = [t for t in active if not t.is_installed]
+            # Count not-installed tools for "Install All" label (skip sub-collections)
+            not_installed = [t for t in active if hasattr(t, "is_installed") and not t.is_installed]
             if not_installed:
                 table.add_row(
                     "[bold green]97[/bold green]", "",
