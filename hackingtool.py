@@ -12,18 +12,19 @@ if sys.version_info < (3, 10):
 
 import os
 import webbrowser
-from platform import system
+from itertools import zip_longest
 
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from rich.prompt import IntPrompt, Confirm
+from rich.prompt import Prompt, Confirm
 from rich.align import Align
 from rich.text import Text
 from rich import box
 from rich.rule import Rule
+from rich.columns import Columns
 
-from core import HackingToolsCollection
+from core import HackingToolsCollection, clear_screen, console
 from constants import VERSION_DISPLAY, REPO_WEB_URL
 from config import get_tools_dir
 from tools.anonsurf import AnonSurfTools
@@ -45,39 +46,30 @@ from tools.wireless_attack import WirelessAttackTools
 from tools.wordlist_generator import WordlistGeneratorTools
 from tools.xss_attack import XSSAttackTools
 
-console = Console()
+# ── Tool registry ──────────────────────────────────────────────────────────────
 
-ASCII_LOGO = r"""
-   ▄█    █▄       ▄████████  ▄████████    ▄█   ▄█▄  ▄█  ███▄▄▄▄      ▄██████▄           ███      ▄██████▄   ▄██████▄   ▄█
-  ███    ███     ███    ███ ███    ███   ███ ▄███▀ ███  ███▀▀▀██▄   ███    ███      ▀█████████▄ ███    ███ ███    ███ ███
-  ███    ███     ███    ███ ███    █▀    ███▐██▀   ███▌ ███   ███   ███    █▀          ▀███▀▀██ ███    ███ ███    ███ ███
- ▄███▄▄▄▄███▄▄   ███    ███ ███         ▄█████▀    ███▌ ███   ███  ▄███                 ███   ▀ ███    ███ ███    ███ ███
-▀▀███▀▀▀▀███▀  ▀███████████ ███        ▀▀█████▄    ███▌ ███   ███ ▀▀███ ████▄           ███     ███    ███ ███    ███ ███
-  ███    ███     ███    ███ ███    █▄    ███▐██▄   ███  ███   ███   ███    ███          ███     ███    ███ ███    ███ ███
-  ███    ███     ███    ███ ███    ███   ███ ▀███▄ ███  ███   ███   ███    ███          ███     ███    ███ ███    ███ ███▌    ▄
-  ███    █▀      ███    █▀  ████████▀    ███   ▀█▀ █▀    ▀█   █▀    ████████▀          ▄████▀    ▀██████▀   ▀██████▀  █████▄▄██
-                                         ▀                                                                            ▀
-"""
-
+# (full_title, icon, menu_label)
+# menu_label is the concise name shown in the 2-column main menu grid.
+# full_title is shown when entering the category.
 tool_definitions = [
-    ("Anonymously Hiding Tools",           "🛡️"),
-    ("Information gathering tools",        "🔍"),
-    ("Wordlist Generator",                 "📚"),
-    ("Wireless attack tools",              "📶"),
-    ("SQL Injection Tools",                "🧩"),
-    ("Phishing attack tools",              "🎣"),
-    ("Web Attack tools",                   "🌐"),
-    ("Post exploitation tools",            "🔧"),
-    ("Forensic tools",                     "🕵️"),
-    ("Payload creation tools",             "📦"),
-    ("Exploit framework",                  "🧰"),
-    ("Reverse engineering tools",          "🔁"),
-    ("DDOS Attack Tools",                  "⚡"),
-    ("Remote Administrator Tools (RAT)",   "🖥️"),
-    ("XSS Attack Tools",                   "💥"),
-    ("Steganography tools",                "🖼️"),
-    ("Other tools",                        "✨"),
-    ("Update or Uninstall | Hackingtool",  "♻️"),
+    ("Anonymously Hiding Tools",           "🛡 ", "Anonymously Hiding"),
+    ("Information gathering tools",        "🔍",  "Information Gathering"),
+    ("Wordlist Generator",                 "📚",  "Wordlist Generator"),
+    ("Wireless attack tools",              "📶",  "Wireless Attack"),
+    ("SQL Injection Tools",                "🧩",  "SQL Injection"),
+    ("Phishing attack tools",              "🎣",  "Phishing Attack"),
+    ("Web Attack tools",                   "🌐",  "Web Attack"),
+    ("Post exploitation tools",            "🔧",  "Post Exploitation"),
+    ("Forensic tools",                     "🕵 ", "Forensics"),
+    ("Payload creation tools",             "📦",  "Payload Creation"),
+    ("Exploit framework",                  "🧰",  "Exploit Framework"),
+    ("Reverse engineering tools",          "🔁",  "Reverse Engineering"),
+    ("DDOS Attack Tools",                  "⚡",  "DDOS Attack"),
+    ("Remote Administrator Tools (RAT)",   "🖥 ", "Remote Admin (RAT)"),
+    ("XSS Attack Tools",                   "💥",  "XSS Attack"),
+    ("Steganography tools",                "🖼 ", "Steganography"),
+    ("Other tools",                        "✨",  "Other Tools"),
+    ("Update or Uninstall | Hackingtool",  "♻ ",  "Update / Uninstall"),
 ]
 
 all_tools = [
@@ -101,87 +93,165 @@ all_tools = [
     ToolManager(),
 ]
 
-
+# Used by generate_readme.py
 class AllTools(HackingToolsCollection):
     TITLE = "All tools"
     TOOLS = all_tools
 
-    def show_info(self):
-        header = Text(ASCII_LOGO, style="bold magenta")
-        footer = Text.assemble(
-            (f" {REPO_WEB_URL} ", "bold bright_black"),
-            (" | ",),
-            (VERSION_DISPLAY, "bold green"),
-        )
-        warning = Text(" Please Don't Use For Illegal Activity ", style="bold red")
-        panel = Panel(
-            Align.center(header + Text("\n") + footer + Text("\n") + warning),
-            box=box.DOUBLE,
-            padding=(1, 2),
-            border_style="magenta",
-        )
-        console.print(panel)
 
+# ── Help overlay ───────────────────────────────────────────────────────────────
+
+def show_help():
+    console.print(Panel(
+        Text.assemble(
+            ("  Main menu\n", "bold white"),
+            ("  ─────────────────────────────────────\n", "dim"),
+            ("  1–17   ", "bold cyan"), ("open a category\n", "white"),
+            ("  18     ", "bold cyan"), ("Update / Uninstall hackingtool\n", "white"),
+            ("  ?      ", "bold cyan"), ("show this help\n", "white"),
+            ("  q      ", "bold cyan"), ("quit hackingtool\n\n", "white"),
+            ("  Inside a category\n", "bold white"),
+            ("  ─────────────────────────────────────\n", "dim"),
+            ("  1–N    ", "bold cyan"), ("select a tool\n", "white"),
+            ("  99     ", "bold cyan"), ("back to main menu\n", "white"),
+            ("  98     ", "bold cyan"), ("open project page (if available)\n\n", "white"),
+            ("  Inside a tool\n", "bold white"),
+            ("  ─────────────────────────────────────\n", "dim"),
+            ("  1      ", "bold cyan"), ("install tool\n", "white"),
+            ("  2      ", "bold cyan"), ("run tool\n", "white"),
+            ("  99     ", "bold cyan"), ("back to category\n", "white"),
+        ),
+        title="[bold magenta] ? Quick Help [/bold magenta]",
+        border_style="magenta",
+        box=box.ROUNDED,
+        padding=(0, 2),
+    ))
+    Prompt.ask("[dim]Press Enter to return[/dim]", default="")
+
+
+# ── Main menu renderer ─────────────────────────────────────────────────────────
 
 def build_menu():
-    table = Table.grid(expand=True)
-    table.add_column("idx", width=6, justify="right")
-    table.add_column("name", justify="left")
+    clear_screen()
 
-    for idx, (title, icon) in enumerate(tool_definitions):
-        if idx == len(tool_definitions) - 1:
-            label = "[bold magenta]99[/bold magenta]"
-            name  = f"[bold magenta]{icon} {title}[/bold magenta]"
+    # ── Compact header ──
+    console.print(Panel(
+        Text.assemble(
+            ("\n    ⚔   H A C K I N G  T O O L\n\n", "bold magenta"),
+            ("    All-in-One Security Research Framework", "white"),
+            ("   ·   ", "dim"),
+            (VERSION_DISPLAY, "bold green"),
+            ("\n    ", ""),
+            (REPO_WEB_URL, "dim cyan"),
+            ("\n\n    ", ""),
+            ("For authorized security testing only\n", "dim red"),
+        ),
+        box=box.HEAVY,
+        border_style="magenta",
+        padding=(0, 2),
+    ))
+
+    # ── 2-column category grid ──
+    # Items 1-17 in two columns, item 18 (ToolManager) shown separately
+    categories = tool_definitions[:-1]   # 17 items
+    update_def = tool_definitions[-1]    # ToolManager
+
+    mid = (len(categories) + 1) // 2    # 9  (left), 8 (right)
+    left  = list(enumerate(categories[:mid],  start=1))
+    right = list(enumerate(categories[mid:],  start=mid + 1))
+
+    grid = Table.grid(padding=(0, 1), expand=True)
+    grid.add_column("ln", justify="right", style="bold magenta", width=5)
+    grid.add_column("li", width=3)
+    grid.add_column("lt", style="magenta", ratio=1, no_wrap=True)
+    grid.add_column("gap", width=3)
+    grid.add_column("rn", justify="right", style="bold magenta", width=5)
+    grid.add_column("ri", width=3)
+    grid.add_column("rt", style="magenta", ratio=1, no_wrap=True)
+
+    for (li, (_, lic, ll)), r in zip_longest(left, right, fillvalue=None):
+        if r:
+            ri, (_, ric, rl) = r
+            grid.add_row(str(li), lic, ll, "", str(ri), ric, rl)
         else:
-            label = f"[bold magenta]{idx}[/bold magenta]"
-            name  = f"[white]{icon}[/white]  [magenta]{title}[/magenta]"
-        table.add_row(label, name)
+            grid.add_row(str(li), lic, ll, "", "", "", "")
 
     console.print(Panel(
-        Align.center(Text("HackingTool — Main Menu", style="bold white on magenta"), vertical="middle"),
-        style="magenta", padding=(0, 1), box=box.ROUNDED,
-    ))
-    console.print(Panel.fit(
-        table,
-        title="[bold magenta]Select a tool[/bold magenta]",
+        grid,
+        title="[bold magenta] Select a Category [/bold magenta]",
         border_style="bright_magenta",
-        box=box.SQUARE,
+        box=box.ROUNDED,
+        padding=(0, 1),
     ))
-    console.print(Rule(style="bright_black"))
-    console.print(Align.center(Text(
-        "Choose number and press Enter — 99 to exit",
-        style="italic bright_black",
-    )))
-    console.print("")
 
+    # ── ToolManager row ──
+    console.print(
+        f"  [bold magenta]  18[/bold magenta]  {update_def[1]}  "
+        f"[magenta]{update_def[2]}[/magenta]"
+    )
+
+    # ── Hint bar ──
+    console.print(Rule(style="dim magenta"))
+    console.print(
+        "  [dim]Enter number to open  ·  "
+        "[bold cyan]?[/bold cyan] help  ·  "
+        "[bold cyan]q[/bold cyan] quit[/dim]\n"
+    )
+
+
+# ── Main interaction loop ──────────────────────────────────────────────────────
 
 def interact_menu():
     while True:
         try:
             build_menu()
-            choice = IntPrompt.ask("[magenta]Choose a tool to proceed[/magenta]", default=0)
-            if choice == 99:
-                console.print(Panel("[bold white on magenta]Goodbye — Come Back Safely[/bold white on magenta]"))
-                break
-            if 0 <= choice < len(all_tools):
-                tool = all_tools[choice]
-                name = tool_definitions[choice][0]
+            raw = Prompt.ask("[bold magenta]>[/bold magenta]", default="").strip().lower()
+
+            if not raw:
+                continue
+
+            if raw in ("?", "help"):
+                show_help()
+                continue
+
+            if raw in ("q", "quit", "exit"):
                 console.print(Panel(
-                    f"[bold magenta]{tool_definitions[choice][1]}  Selected:[/bold magenta] [white]{name}[/white]"
+                    "[bold white on magenta]  Goodbye — Come Back Safely  [/bold white on magenta]",
+                    box=box.HEAVY, border_style="magenta",
+                ))
+                break
+
+            try:
+                choice = int(raw)
+            except ValueError:
+                console.print("[red]⚠  Invalid input — enter a number, ? for help, or q to quit.[/red]")
+                Prompt.ask("[dim]Press Enter to continue[/dim]", default="")
+                continue
+
+            if 1 <= choice <= len(all_tools):
+                title, icon, _ = tool_definitions[choice - 1]
+                console.print(Panel(
+                    f"[bold magenta]{icon}  {title}[/bold magenta]",
+                    border_style="magenta", box=box.ROUNDED,
                 ))
                 try:
-                    tool.show_options()
+                    all_tools[choice - 1].show_options()
                 except Exception as e:
-                    console.print(Panel(f"[red]Error while opening {name}[/red]\n{e}", border_style="red"))
-                if not Confirm.ask("[magenta]Return to main menu?[/magenta]", default=True):
-                    console.print(Panel("[bold white on magenta]Exiting...[/bold white on magenta]"))
-                    break
+                    console.print(Panel(
+                        f"[red]Error while opening {title}[/red]\n{e}",
+                        border_style="red",
+                    ))
+                    Prompt.ask("[dim]Press Enter to return to main menu[/dim]", default="")
             else:
-                console.print("[red]Invalid selection. Pick a number from the menu.[/red]")
+                console.print(f"[red]⚠  Choose 1–{len(all_tools)}, ? for help, or q to quit.[/red]")
+                Prompt.ask("[dim]Press Enter to continue[/dim]", default="")
+
         except KeyboardInterrupt:
             console.print("\n[bold red]Interrupted — exiting[/bold red]")
             break
 
+
+# ── Entry point ────────────────────────────────────────────────────────────────
 
 def main():
     try:
@@ -196,11 +266,7 @@ def main():
         if CURRENT_OS.system not in ("linux", "macos"):
             console.print(f"[yellow]Unsupported OS: {CURRENT_OS.system}. Proceeding anyway...[/yellow]")
 
-        # Ensure ~/.hackingtool/tools/ exists — no os.chdir(), tools use absolute paths
-        tools_dir = get_tools_dir()
-        console.print(f"[dim]Tools directory: {tools_dir}[/dim]")
-
-        AllTools().show_info()
+        get_tools_dir()   # ensures ~/.hackingtool/tools/ exists
         interact_menu()
 
     except KeyboardInterrupt:
