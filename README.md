@@ -80,6 +80,8 @@ sudo python3 hackingtool.py
 
 Navigate through the menu using the number keys to select your desired tool category.
 
+> **Note:** I personally use this mostly for the Information Gathering and Hash Cracking sections while working through CTF challenges on HackTheBox/TryHackMe.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please read our [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md) before submitting.
