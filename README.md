@@ -82,6 +82,12 @@ Navigate through the menu using the number keys to select your desired tool cate
 
 > **Note:** I personally use this mostly for the Information Gathering and Hash Cracking sections while working through CTF challenges on HackTheBox/TryHackMe.
 
+## 🗒️ Personal Notes
+
+- Most tools require an active internet connection to clone/install on first run.
+- On Ubuntu 22.04 I had to run `sudo apt install python3-dev libssl-dev` before `install.sh` would complete without errors.
+- The Hash Cracking section works best when you point it at a local copy of `rockyou.txt` (usually at `/usr/share/wordlists/rockyou.txt` on Kali).
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please read our [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md) before submitting.
