@@ -86,6 +86,7 @@ Navigate through the menu using the number keys to select your desired tool cate
 
 - Most tools require an active internet connection to clone/install on first run.
 - On Ubuntu 22.04 I had to run `sudo apt install python3-dev libssl-dev` before `install.sh` would complete without errors.
+- On Ubuntu 24.04 also needed `sudo apt install python3-venv` — the install script fails silently otherwise.
 - The Hash Cracking section works best when you point it at a local copy of `rockyou.txt` (usually at `/usr/share/wordlists/rockyou.txt` on Kali).
 
 ## 🤝 Contributing
@@ -108,9 +109,4 @@ Use the [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md) issue template.
 
 ## 📄 License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Credits
-
-- Original project: [Z4nzu/hackingtool](https://github.com/Z4nzu/hackingtool)
-- All tool authors and contributors
+This project is licensed unde
