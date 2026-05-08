@@ -89,6 +89,7 @@ Navigate through the menu using the number keys to select your desired tool cate
 - On Ubuntu 24.04 also needed `sudo apt install python3-venv` — the install script fails silently otherwise.
 - On Ubuntu 24.04 with Python 3.12+, also run `sudo apt install python3-distutils` or the pip-based installs inside the script will fail with a `ModuleNotFoundError`.
 - The Hash Cracking section works best when you point it at a local copy of `rockyou.txt` (usually at `/usr/share/wordlists/rockyou.txt` on Kali).
+- On Kali rolling (2024.x), `rockyou.txt` is gzipped by default — run `sudo gunzip /usr/share/wordlists/rockyou.txt.gz` first if you get encoding errors.
 
 ## 🤝 Contributing
 
@@ -97,13 +98,4 @@ Contributions are welcome! Please read our [Pull Request Template](.github/PULL_
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feat/new-tool`)
 3. Commit your changes (`git commit -m 'feat: add new tool category'`)
-4. Push to the branch (`git push origin feat/new-tool`)
-5. Open a Pull Request
-
-### Requesting a New Tool
-
-Use the [Tool Request](.github/ISSUE_TEMPLATE/tool_request.md) issue template.
-
-### Reporting Bugs
-
-Use the [B
+4. Push to the branch (`git push origin feat/new-t
